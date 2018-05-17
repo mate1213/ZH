@@ -154,46 +154,69 @@ namespace ZH
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            OpenFileDialog ofd = new OpenFileDialog();
             Dictionary<string, int> Postak = new Dictionary<string, int>();
             
-            sfd.Filter = "Text Files (.txt)|*.txt*";
-            sfd.DefaultExt = "txt";
-            sfd.AddExtension = true;
+            ofd.Filter = "Text Files (.txt)|*.txt*";
+            ofd.DefaultExt = "txt";
+            ofd.AddExtension = true;
 
-            sfd.FileName = "eredmeny.txt";
-            if (sfd.ShowDialog() == DialogResult.OK)
+            ofd.FileName = "eredmeny.txt";
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                using (StreamReader sr = new StreamReader(sfd.FileName))
+                using (StreamReader sr = new StreamReader(ofd.FileName))
                 {
                     while (!sr.EndOfStream)
                     {
                         string[] temp = sr.ReadLine().Split(' ');
-                        Postak.Add(temp[0], int.Parse(temp[1]));
+                        Postak.Add( temp[0], int.Parse(temp[1]));
                     }
                 }
-                using (StreamWriter sw = new StreamWriter("eredmeny.txt"))
+                foreach (var Posta in Postak)
                 {
-                    foreach (var item in level)
+                    using (StreamWriter sr = new StreamWriter(new FileStream(Posta.Value.ToString() + ".txt", FileMode.Create)))
                     {
-                        if (Postak.Keys.Contains<string>(item.Varos))
+                        foreach (var levelVaros in level)
                         {
-                            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                            if (levelVaros.Varos == Posta.Key)
+                            {
+                                sr.WriteLine(levelVaros.ToString());
+                            }
                         }
-                        else
-                            MessageBox.Show("Ebben a városban nincs postafiók!");
-                    }
-                    foreach (var item in csomag)
-                    {
-                        if (Postak.Keys.Contains<string>(item.Varos))
+                        foreach (var csomagVaros in csomag)
                         {
-                            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                            if (csomagVaros.Varos == Posta.Key)
+                            {
+                                sr.WriteLine(csomagVaros.ToString());
+                            }
                         }
-                        else
-                            MessageBox.Show("Ebben a városban nincs postafiók!");
                     }
                 }
+
+                //using (StreamWriter sw = new StreamWriter("eredmeny.txt"))
+                //{
+                //    foreach (var item in level)
+                //    {
+                //        if (Postak.Keys.Contains<string>(item.Varos))
+                //        {
+                //            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                //        }
+                //        else
+                //            MessageBox.Show("Ebben a városban nincs postafiók!");
+                //    }
+                //    foreach (var item in csomag)
+                //    {
+                //        if (Postak.Keys.Contains<string>(item.Varos))
+                //        {
+                //            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                //        }
+                //        else
+                //            MessageBox.Show("Ebben a városban nincs postafiók!");
+                //    }
+                //}
                 listBox1.Items.Clear();
+                level.Clear();
+                csomag.Clear();
             }
         }
     }
