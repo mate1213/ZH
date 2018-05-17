@@ -170,11 +170,22 @@ namespace ZH
                 {
                     if (Postak.Keys.Contains<string>(item.Varos))
                     {
-                        sw.WriteLine(item.ToString() + " [" + Postak.Values.)
+                        sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
                     }
+                    else
+                        MessageBox.Show("Ebben a városban nincs postafiók!");
+                }
+                foreach (var item in csomag)
+                {
+                    if (Postak.Keys.Contains<string>(item.Varos))
+                    {
+                        sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                    }
+                    else
+                        MessageBox.Show("Ebben a városban nincs postafiók!");
                 }
             }
-
+            listBox1.Items.Clear();
         }
     }
 }
