@@ -123,7 +123,7 @@ namespace ZH
             textBox6.Enabled = false;
             checkBox1.Enabled = false;
             checkBox2.Enabled = false;
-            
+
         }
 
         public bool IDGen(int newID)
@@ -154,20 +154,26 @@ namespace ZH
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int postaSzam;
-            string Varos;
+            Dictionary<string, int> Postak = new Dictionary<string, int>();
 
             using (StreamReader sr = new StreamReader(@"Posta.txt"))
             {
                 while (!sr.EndOfStream)
                 {
                     string[] temp = sr.ReadLine().Split(' ');
-                    Varos = temp[0];
-                    int.TryParse(temp[1], out postaSzam);
+                    Postak.Add(temp[0], int.Parse(temp[1]));
                 }
             }
-
-
+            using (StreamWriter sw = new StreamWriter("eredmeny.txt"))
+            {
+                foreach (var item in level)
+                {
+                    if (Postak.Keys.Contains<string>(item.Varos))
+                    {
+                        sw.WriteLine(item.ToString() + " [" + Postak.Values.)
+                    }
+                }
+            }
 
         }
     }
