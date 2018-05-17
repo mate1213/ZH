@@ -154,38 +154,47 @@ namespace ZH
 
         private void button2_Click(object sender, EventArgs e)
         {
+            SaveFileDialog sfd = new SaveFileDialog();
             Dictionary<string, int> Postak = new Dictionary<string, int>();
+            
+            sfd.Filter = "Text Files (.txt)|*.txt*";
+            sfd.DefaultExt = "txt";
+            sfd.AddExtension = true;
 
-            using (StreamReader sr = new StreamReader(@"Posta.txt"))
+            sfd.FileName = "eredmeny.txt";
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
-                while (!sr.EndOfStream)
+                using (StreamReader sr = new StreamReader(sfd.FileName))
                 {
-                    string[] temp = sr.ReadLine().Split(' ');
-                    Postak.Add(temp[0], int.Parse(temp[1]));
-                }
-            }
-            using (StreamWriter sw = new StreamWriter("eredmeny.txt"))
-            {
-                foreach (var item in level)
-                {
-                    if (Postak.Keys.Contains<string>(item.Varos))
+                    while (!sr.EndOfStream)
                     {
-                        sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                        string[] temp = sr.ReadLine().Split(' ');
+                        Postak.Add(temp[0], int.Parse(temp[1]));
                     }
-                    else
-                        MessageBox.Show("Ebben a városban nincs postafiók!");
                 }
-                foreach (var item in csomag)
+                using (StreamWriter sw = new StreamWriter("eredmeny.txt"))
                 {
-                    if (Postak.Keys.Contains<string>(item.Varos))
+                    foreach (var item in level)
                     {
-                        sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                        if (Postak.Keys.Contains<string>(item.Varos))
+                        {
+                            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                        }
+                        else
+                            MessageBox.Show("Ebben a városban nincs postafiók!");
                     }
-                    else
-                        MessageBox.Show("Ebben a városban nincs postafiók!");
+                    foreach (var item in csomag)
+                    {
+                        if (Postak.Keys.Contains<string>(item.Varos))
+                        {
+                            sw.WriteLine(item.ToString() + " [" + Postak[item.Varos] + "]");
+                        }
+                        else
+                            MessageBox.Show("Ebben a városban nincs postafiók!");
+                    }
                 }
+                listBox1.Items.Clear();
             }
-            listBox1.Items.Clear();
         }
     }
 }
