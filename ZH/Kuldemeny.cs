@@ -9,7 +9,7 @@ namespace ZH
     abstract public class Kuldemeny
     {
         #region Propertys
-        public int ID { get; set; }
+        public int ID { get; set; } = 1;
         public string Cimzett { get; set; }
         public string Irszam { get; set; }
         public string Varos { get; set; }
